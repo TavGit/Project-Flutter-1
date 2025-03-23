@@ -38,7 +38,7 @@ class _MyChatState extends State<MyChat> {
     'Besok jadi bukber kaga?',
     'OTW nih',
     'Eh gmn kabar SNBP?',
-    'Rencana setelah lulus mau......',
+    'Lu nanti abis lulus sekolah, mau kerja apa kuliah?',
     'Wkwkwkwk, kocak lu',
     'Lu mau kuliah dimana?',
     'Enakkan kerja apa kuliah si?',
@@ -152,10 +152,11 @@ class _MyChatState extends State<MyChat> {
                         context,
                         MaterialPageRoute(
                           builder:
-                              (context) => Chat1(
+                              (context) => ChatItems(
                                 nama: chatList[index]['nama']!,
                                 pesan: chatList[index]['pesan']!,
                                 foto: chatList[index]['foto']!,
+                                waktu: chatList[index]['waktu']!,
                               ),
                         ),
                       );
@@ -171,18 +172,25 @@ class _MyChatState extends State<MyChat> {
   }
 }
 
-class Chat1 extends StatelessWidget {
-  const Chat1({
+class ChatItems extends StatefulWidget {
+  const ChatItems({
     super.key,
     required this.nama,
     required this.pesan,
     required this.foto,
+    required this.waktu,
   });
 
   final String nama;
   final String pesan;
   final String foto;
+  final String waktu;
 
+  @override
+  State<ChatItems> createState() => _ChatItemsState();
+}
+
+class _ChatItemsState extends State<ChatItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,30 +199,46 @@ class Chat1 extends StatelessWidget {
         backgroundColor: Colors.green[500],
         title: Row(
           children: [
-            CircleAvatar(backgroundImage: NetworkImage(foto)),
+            CircleAvatar(backgroundImage: NetworkImage(widget.foto)),
             SizedBox(width: 10),
-            Text(nama, style: TextStyle(fontSize: 20, color: Colors.white)),],
+            Text(
+              widget.nama,
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ],
         ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16.0),
             child: SizedBox(
               width: 40,
-              child: IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined, color: Colors.white,),iconSize: 27,),
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.videocam_outlined, color: Colors.white),
+                iconSize: 27,
+              ),
             ),
           ),
           Padding(
             padding: EdgeInsets.only(right: 16.0),
             child: SizedBox(
               width: 40,
-              child: IconButton(onPressed: () {}, icon: Icon(Icons.phone_outlined, color: Colors.white,), iconSize: 27,),
-            )
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.phone_outlined, color: Colors.white),
+                iconSize: 27,
+              ),
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(right: 16.0),
             child: SizedBox(
-              child: IconButton(onPressed: () {}, icon: Icon(Icons.more_vert, color: Colors.white,), iconSize: 27,),
-            )
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.more_vert, color: Colors.white),
+                iconSize: 27,
+              ),
+            ),
           ),
         ],
       ),
@@ -226,13 +250,19 @@ class Chat1 extends StatelessWidget {
               padding: EdgeInsets.all(16),
               child: ListTile(
                 tileColor: Colors.white,
-                subtitle: Text(pesan, style: TextStyle(fontSize: 20)),
+                subtitle: Text(widget.pesan, style: TextStyle(fontSize: 20)),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 270)),
+            Padding(padding: EdgeInsets.only(top: 260)),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.10),
               child: TextField(
+                style: TextStyle(color: Colors.white, fontSize: 20),
+                showCursor: true,
+                cursorColor: Colors.blue,
+                cursorOpacityAnimates: true,
+                cursorWidth: 5,
+                cursorHeight: 20,
                 autocorrect: false,
                 autofocus: true,
                 enableInteractiveSelection: true,
@@ -241,25 +271,33 @@ class Chat1 extends StatelessWidget {
                   fillColor: Colors.green[500],
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
-                    borderSide: BorderSide(color: Colors.green[500]!, width: 10),
+                    borderSide: BorderSide(
+                      color: Colors.green[500]!,
+                      width: 10,
+                    ),
                   ),
                   hintText: 'Ketik Pesan',
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white70, fontSize: 20),
                   prefixIcon: Icon(Icons.emoji_emotions),
                   prefixIconColor: Colors.white,
                   suffixIcon: IconButton(
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.send, size: 30),
                   ),
                   suffixIconColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
-                    borderSide: BorderSide(color: Colors.green[500]!, width: 4.0),
+                    borderSide: BorderSide(
+                      color: Colors.green[500]!,
+                      width: 4.0,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
-                    borderSide: BorderSide(color: Colors.green[500]!, width: 4.0),
+                    borderSide: BorderSide(
+                      color: Colors.green[500]!,
+                      width: 4.0,
+                    ),
                   ),
                 ),
               ),

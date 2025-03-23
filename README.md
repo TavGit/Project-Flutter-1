@@ -1,16 +1,19 @@
 # aplikasi_sederhana
 
-A new Flutter project.
+this is my first project flutter
 
-## Getting Started
+and, this is project so simple
 
-This project is a starting point for a Flutter application.
+because, this project  a have five pages:
+1. daftar pages
+2. login pages
+3. home pages
+4. chat pages
+5. incre & decre pages
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+but, this project not database for daftar pages and login pages,
+only UI design 
+
+so, lets go check my project!!!

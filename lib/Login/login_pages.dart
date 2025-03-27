@@ -1,7 +1,6 @@
 import 'package:aplikasi_sederhana/Authentication/auth_service.dart';
 import 'package:aplikasi_sederhana/Daftar/daftar_pages.dart';
 import 'package:flutter/material.dart';
-// import 'package:aplikasi_sederhana/BottomNavBar/bottomnavbar.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -30,12 +29,14 @@ class _MyLoginState extends State<MyLogin> {
     try {
       await authService.signInWithEmailPassword(email, password);
     }
+
     // jika error
     catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Gagal Login: $error")));
+        ).showSnackBar(SnackBar(content: Text("Gagal Login")));
+        print('error: $error');
       }
     }
   }
@@ -44,66 +45,21 @@ class _MyLoginState extends State<MyLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.brown,
-      // backgroundColor: Colors.lightGreen,
+      appBar: AppBar(
+        backgroundColor: Colors.brown,
+        title: Text(
+          'Login Kuyy ',
+          style: TextStyle(
+            fontFamily: 'SpicyRice-Regular',
+            fontSize: 50,
+            color: Color.fromARGB(255, 7, 255, 48),
+          ),
+        ),
+      ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 100.0),
-              child: Text(
-                'Login Kuyy ',
-                style: TextStyle(
-                  fontFamily: 'SpicyRice-Regular',
-                  fontSize: 50,
-                  color: Color.fromARGB(255, 7, 255, 48),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 230, top: 30),
-              child: Text(
-                'Masukkan Username: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: TextField(
-                autocorrect: false,
-                autofocus: false,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 7, 184, 207),
-                      width: 4.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 7, 184, 207),
-                      width: 2.0,
-                    ),
-                  ),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(12),
-                  //   borderSide: BorderSide(color: Colors.redAccent, width: 4.0),
-                  // ),
-                  prefixIcon: Icon(Icons.person),
-                  prefixIconColor: Color.fromARGB(255, 7, 184, 207),
-                  hintText: 'Masukkan Username',
-                  hintStyle: TextStyle(color: Colors.black),
-                ),
-              ),
-            ),
             Padding(
               padding: EdgeInsets.only(right: 230, top: 30),
               child: Text(
@@ -227,26 +183,24 @@ class _MyLoginState extends State<MyLogin> {
             ),
 
             GestureDetector(
-            onTap: () => 
+              onTap: () => 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyDaftar()),
+                MaterialPageRoute(
+                  builder: (context) => MyDaftar(),
+                ),
               ),
-            child: Center(
-              child: Column(
-                children: [
-                  Text(
-                    "Belum punya akun?,",
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              child: Center(
+                child: Text(
+                  "Belum punya akun?, Let's Go Sign Up!!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
                   ),
-                   Text(
-                    "Let's Go Sign Up!!",
-                    style: TextStyle(color: Colors.lightBlue, fontSize: 13, fontWeight: FontWeight.bold),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
           ],
         ),
       ),

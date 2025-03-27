@@ -8,8 +8,7 @@ import 'package:aplikasi_sederhana/Authentication/auth_gate.dart';
 
 void main() async {
   await Supabase.initialize(
-    anonKey:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttcnVxcmhwcGxzbW1hY2RqdWtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNTA2NDIsImV4cCI6MjA1ODYyNjY0Mn0.7XOVtt_NJKRG2bQCnOomlMtbIGmYiwaJfo4U-mZhmj0",
+    anonKey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttcnVxcmhwcGxzbW1hY2RqdWtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNTA2NDIsImV4cCI6MjA1ODYyNjY0Mn0.7XOVtt_NJKRG2bQCnOomlMtbIGmYiwaJfo4U-mZhmj0",
     url: "https://kmruqrhpplsmmacdjukj.supabase.co",
   );
   runApp(const MyApp());

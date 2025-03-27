@@ -16,7 +16,9 @@ class _MyHomeState extends State<MyHome> {
 
   void logout() async {
     await authService.signOut();
+    print('keluar: $logout');
   }
+  
 
 
 
@@ -28,6 +30,7 @@ class _MyHomeState extends State<MyHome> {
         backgroundColor: Colors.blue,
         actions: [
           IconButton(onPressed: logout, icon: Icon(Icons.logout)),
+          
         ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,

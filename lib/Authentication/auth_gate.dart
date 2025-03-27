@@ -1,4 +1,5 @@
-import 'package:aplikasi_sederhana/Home/Home_Pages.dart';
+import 'package:aplikasi_sederhana/BottomNavBar/bottomnavbar.dart';
+// import 'package:aplikasi_sederhana/Home/Home_Pages.dart';
 import 'package:aplikasi_sederhana/Login/login_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,7 +19,7 @@ class AuthGate extends StatelessWidget {
         final session = snapshot.hasData ? snapshot.data!.session : null;
 
         if (session != null) {
-          return MyHome();
+          return MyBottomNavBar();
         } else {
           return MyLogin();
         }

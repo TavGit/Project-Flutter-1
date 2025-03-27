@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // import 'package:aplikasi_sederhana/Login/login_pages.dart';
 import 'package:gotrue/src/types/auth_response.dart';
 
-
 class MyDaftar extends StatefulWidget {
   const MyDaftar({super.key});
 
@@ -14,7 +13,7 @@ class MyDaftar extends StatefulWidget {
 class _MyDaftarState extends State<MyDaftar> {
   bool _isObscure = true;
 
-   // dapatkan auth service
+  // dapatkan auth service
   final authService = AuthService();
 
   // buat teks controller untuk email dan password
@@ -28,9 +27,19 @@ class _MyDaftarState extends State<MyDaftar> {
     final password = _passwordController.text.trim();
     final confirmPassword = _confirmpasswordController.text.trim();
 
+    print('Password: $password');
+
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Password dan konfirmasi password tidak cocok')),
+      );
+      return;
+    }
+
+    // Validasi panjang password
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password harus 6 karakter atau lebih')),
       );
       return;
     }
@@ -47,79 +56,51 @@ class _MyDaftarState extends State<MyDaftar> {
           SnackBar(content: Text('Error: ${response.error!.message}')),
         );
       }
+
+      print('response: $response'); 
+
+      
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password harus 6 karakter atau lebih')),
+        SnackBar(content: Text('Terjadi kesalahan, silahkan coba lagi')),
       );
+      print('kesalahan: $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-      // backgroundColor: Colors.lightGreen,
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
+        title: Text(
+          'Sign Up Kuyy ',
+          style: TextStyle(
+            fontFamily: 'SpicyRice-Regular',
+            fontSize: 50,
+            color: Colors.amber,
+          ),
+        ),
+      ),
+      
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 100.0),
-              child: Text(
-                'Sign Up Kuyy ',
-                style: TextStyle(
-                  fontFamily: 'SpicyRice-Regular',
-                  fontSize: 50,
-                  color: Colors.amber,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 230, top: 30),
-              child: Text(
-                'Buat Username: ',
-                style: TextStyle(fontSize: 16, color: Colors.white ,fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: TextField(
-                autocorrect: false,
-                autofocus: false,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.redAccent, width: 4.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
-                  ),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(12),
-                  //   borderSide: BorderSide(color: Colors.redAccent, width: 4.0),
-                  // ),
-                  prefixIcon: Icon(Icons.person),
-                  prefixIconColor: Colors.redAccent,
-                  hintText: 'Buat Username',
-                  hintStyle: TextStyle(
-                    color: Colors.black,
-                  )
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 230, top: 30),
+              padding: EdgeInsets.only(right: 230, top: 10),
               child: Text(
                 'Buat Email: ',
-                style: TextStyle(fontSize: 16, color: Colors.white ,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: TextField(
                 controller: _emailController,
                 autocorrect: false,
@@ -129,11 +110,17 @@ class _MyDaftarState extends State<MyDaftar> {
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 255, 252, 82), width: 4.0),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 255, 252, 82),
+                      width: 4.0,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 255, 252, 82), width: 2.0),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 255, 252, 82),
+                      width: 2.0,
+                    ),
                   ),
                   // enabledBorder: OutlineInputBorder(
                   //   borderRadius: BorderRadius.circular(12),
@@ -142,9 +129,7 @@ class _MyDaftarState extends State<MyDaftar> {
                   prefixIcon: Icon(Icons.email),
                   prefixIconColor: Color.fromARGB(255, 255, 252, 82),
                   hintText: 'Buat Email',
-                  hintStyle: TextStyle(
-                    color: Colors.black,
-                  )
+                  hintStyle: TextStyle(color: Colors.black),
                 ),
               ),
             ),
@@ -152,11 +137,15 @@ class _MyDaftarState extends State<MyDaftar> {
               padding: EdgeInsets.only(right: 230, top: 10),
               child: Text(
                 'Buat Password: ',
-                style: TextStyle(fontSize: 16, color: Colors.white ,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: TextField(
                 controller: _passwordController,
                 autocorrect: false,
@@ -208,11 +197,15 @@ class _MyDaftarState extends State<MyDaftar> {
               padding: EdgeInsets.only(right: 230, top: 10),
               child: Text(
                 'Konfirmasi Password: ',
-                style: TextStyle(fontSize: 16, color: Colors.white ,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: TextField(
                 controller: _confirmpasswordController,
                 autocorrect: false,

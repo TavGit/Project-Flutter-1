@@ -1,5 +1,7 @@
+import 'package:aplikasi_sederhana/Authentication/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:aplikasi_sederhana/Login/login_pages.dart';
+// import 'package:aplikasi_sederhana/Login/login_pages.dart';
+import 'package:gotrue/src/types/auth_response.dart';
 
 
 class MyDaftar extends StatefulWidget {
@@ -11,6 +13,46 @@ class MyDaftar extends StatefulWidget {
 
 class _MyDaftarState extends State<MyDaftar> {
   bool _isObscure = true;
+
+   // dapatkan auth service
+  final authService = AuthService();
+
+  // buat teks controller untuk email dan password
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmpasswordController = TextEditingController();
+
+  // fungsi untuk daftar
+  void signUp() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmpasswordController.text.trim();
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password dan konfirmasi password tidak cocok')),
+      );
+      return;
+    }
+
+    try {
+      final response = await authService.signUp(email, password);
+      if (response.error == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Registrasi berhasil')));
+        // Navigasi ke halaman berikutnya
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${response.error!.message}')),
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password harus 6 karakter atau lebih')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +67,7 @@ class _MyDaftarState extends State<MyDaftar> {
             Padding(
               padding: EdgeInsets.only(top: 100.0),
               child: Text(
-                'Daftar Akun',
+                'Sign Up Kuyy ',
                 style: TextStyle(
                   fontFamily: 'SpicyRice-Regular',
                   fontSize: 50,
@@ -70,6 +112,43 @@ class _MyDaftarState extends State<MyDaftar> {
               ),
             ),
             Padding(
+              padding: EdgeInsets.only(right: 230, top: 30),
+              child: Text(
+                'Buat Email: ',
+                style: TextStyle(fontSize: 16, color: Colors.white ,fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: TextField(
+                controller: _emailController,
+                autocorrect: false,
+                autofocus: false,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Color.fromARGB(255, 255, 252, 82), width: 4.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Color.fromARGB(255, 255, 252, 82), width: 2.0),
+                  ),
+                  // enabledBorder: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(12),
+                  //   borderSide: BorderSide(color: Colors.redAccent, width: 4.0),
+                  // ),
+                  prefixIcon: Icon(Icons.email),
+                  prefixIconColor: Color.fromARGB(255, 255, 252, 82),
+                  hintText: 'Buat Email',
+                  hintStyle: TextStyle(
+                    color: Colors.black,
+                  )
+                ),
+              ),
+            ),
+            Padding(
               padding: EdgeInsets.only(right: 230, top: 10),
               child: Text(
                 'Buat Password: ',
@@ -79,6 +158,7 @@ class _MyDaftarState extends State<MyDaftar> {
             Padding(
               padding: EdgeInsets.all(20),
               child: TextField(
+                controller: _passwordController,
                 autocorrect: false,
                 autofocus: false,
                 obscureText: _isObscure,
@@ -125,14 +205,65 @@ class _MyDaftarState extends State<MyDaftar> {
               ),
             ),
             Padding(
+              padding: EdgeInsets.only(right: 230, top: 10),
+              child: Text(
+                'Konfirmasi Password: ',
+                style: TextStyle(fontSize: 16, color: Colors.white ,fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: TextField(
+                controller: _confirmpasswordController,
+                autocorrect: false,
+                autofocus: false,
+                obscureText: _isObscure,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Colors.deepPurple,
+                      width: 4.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Colors.deepPurple,
+                      width: 2.0,
+                    ),
+                  ),
+                  // enabledBorder: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(12),
+                  //   borderSide: BorderSide(
+                  //     color: Colors.deepPurple,
+                  //     width: 4.0,
+                  //   ),
+                  // ),
+                  prefixIcon: Icon(Icons.lock),
+                  prefixIconColor: Colors.deepPurple,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isObscure ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                  ),
+                  suffixIconColor: Colors.deepPurple,
+                  hintText: 'Konfirmasi Password',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.only(top: 10),
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyLogin()),
-                  );
-                },
+                onPressed: signUp,
                 style: ElevatedButton.styleFrom(
                   maximumSize: Size(500, 50),
                   minimumSize: Size(300, 50),
@@ -140,7 +271,7 @@ class _MyDaftarState extends State<MyDaftar> {
                   foregroundColor: Colors.white,
                 ),
                 child: Text(
-                  'Gass Daftar 👉',
+                  'Sign Up 👉',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
@@ -150,4 +281,8 @@ class _MyDaftarState extends State<MyDaftar> {
       ),
     );
   }
+}
+
+extension on AuthResponse {
+  get error => null;
 }

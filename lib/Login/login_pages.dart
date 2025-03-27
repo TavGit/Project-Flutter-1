@@ -1,5 +1,7 @@
+import 'package:aplikasi_sederhana/Authentication/auth_service.dart';
+import 'package:aplikasi_sederhana/Daftar/daftar_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:aplikasi_sederhana/BottomNavBar/bottomnavbar.dart';
+// import 'package:aplikasi_sederhana/BottomNavBar/bottomnavbar.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -10,6 +12,33 @@ class MyLogin extends StatefulWidget {
 
 class _MyLoginState extends State<MyLogin> {
   bool _isObscure = true;
+
+  // dapatkan authentikasi dari service
+  final authService = AuthService();
+
+  // buat variabel controller untuk email dan pasword
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  // fungsi untuk login
+  void login() async {
+    // persiapkan data
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    // mencoba login
+    try {
+      await authService.signInWithEmailPassword(email, password);
+    }
+    // jika error
+    catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Gagal Login: $error")));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,19 +81,70 @@ class _MyLoginState extends State<MyLogin> {
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 82, 255, 203), width: 4.0),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 7, 184, 207),
+                      width: 4.0,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 82, 255, 203), width: 2.0),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 7, 184, 207),
+                      width: 2.0,
+                    ),
                   ),
                   // enabledBorder: OutlineInputBorder(
                   //   borderRadius: BorderRadius.circular(12),
                   //   borderSide: BorderSide(color: Colors.redAccent, width: 4.0),
                   // ),
                   prefixIcon: Icon(Icons.person),
-                  prefixIconColor: Color.fromARGB(255, 82, 255, 203),
+                  prefixIconColor: Color.fromARGB(255, 7, 184, 207),
                   hintText: 'Masukkan Username',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 230, top: 30),
+              child: Text(
+                'Masukkan Email: ',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: TextField(
+                controller: _emailController,
+                autocorrect: false,
+                autofocus: false,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 82, 255, 203),
+                      width: 4.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 82, 255, 203),
+                      width: 2.0,
+                    ),
+                  ),
+                  // enabledBorder: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(12),
+                  //   borderSide: BorderSide(color: Colors.redAccent, width: 4.0),
+                  // ),
+                  prefixIcon: Icon(Icons.email),
+                  prefixIconColor: Color.fromARGB(255, 82, 255, 203),
+                  hintText: 'Masukkan Email',
                   hintStyle: TextStyle(color: Colors.black),
                 ),
               ),
@@ -83,6 +163,7 @@ class _MyLoginState extends State<MyLogin> {
             Padding(
               padding: EdgeInsets.all(20),
               child: TextField(
+                controller: _passwordController,
                 autocorrect: false,
                 autofocus: false,
                 obscureText: _isObscure,
@@ -131,12 +212,7 @@ class _MyLoginState extends State<MyLogin> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyBottomNavBar()),
-                  );
-                },
+                onPressed: login,
                 style: ElevatedButton.styleFrom(
                   maximumSize: Size(500, 50),
                   minimumSize: Size(300, 50),
@@ -144,11 +220,33 @@ class _MyLoginState extends State<MyLogin> {
                   foregroundColor: Colors.white,
                 ),
                 child: Text(
-                  'Gass Login 👉',
+                  'Login 👉',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
             ),
+
+            GestureDetector(
+            onTap: () => 
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyDaftar()),
+              ),
+            child: Center(
+              child: Column(
+                children: [
+                  Text(
+                    "Belum punya akun?,",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                  ),
+                   Text(
+                    "Let's Go Sign Up!!",
+                    style: TextStyle(color: Colors.lightBlue, fontSize: 13, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
           ],
         ),
       ),
